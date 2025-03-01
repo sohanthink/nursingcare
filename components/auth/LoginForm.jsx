@@ -8,13 +8,13 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 
 
-const LoginForm = ({ onsubmit }) => {
+const LoginForm = ({ onSubmit }) => {
     return (
         <div className="bg-primary flex h-screen">
             <div className="w-full md:w-1/2 flex flex-col justify-center p-10 space-y-3">
                 <h1 className="text-white text-5xl">Login to your Panel.</h1>
                 <p className="text-white text-3xl">Welcome to the System.</p>
-                <form className='mt-3' onSubmit={onsubmit}>
+                <form className='mt-3' onSubmit={onSubmit}>
                     <div className='mb-4'>
                         <Label className='text-white mb-2' htmlFor="email">Email</Label>
                         <Input className='text-white' type="email" id="email" placeholder="Email" required />

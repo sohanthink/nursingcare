@@ -17,8 +17,6 @@ const AdminLogin = () => {
         const password = event.target.password.value;
 
         try {
-            // const response = await fetch(`${process.env.API_URI}/auth/sign-in`, {
-
             const response = await fetch('http://localhost:3000/api/v1/auth/sign-in', {
                 method: 'POST',
                 headers: {
@@ -27,10 +25,13 @@ const AdminLogin = () => {
                 body: JSON.stringify({ email, password }),
             });
 
-            console.log("response", response);
-
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Network response was not ok');
+            }
+
+            if (response.status === 404) {
+                throw new Error('User Not Found');
             }
 
             const data = await response.json();
@@ -38,10 +39,11 @@ const AdminLogin = () => {
             console.log('Login successful:', data);
         } catch (error) {
             console.error('There was a problem with the login request:', error);
+            alert(`Login failed: ${error.message}`);
         }
     }
     return (
-        <LoginForm onsubmit={handleSubmit} />
+        <LoginForm onSubmit={handleSubmit} />
     )
 }
 
