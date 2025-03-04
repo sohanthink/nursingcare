@@ -2,17 +2,21 @@
 
 import React from 'react'
 import LoginForm from '../LoginForm'
-
+import { useRouter } from 'next/navigation';
+import useAuthStore from '@/store/authStore';
 
 const AdminLogin = () => {
+    const router = useRouter();
+    const login = useAuthStore(state => state.login);
 
     const onSubmit = async (event) => {
         event.preventDefault();
         const email = event.target.email.value;
         const password = event.target.password.value;
+        console.log('Email:', email, 'Password:', password);
 
         try {
-            const response = await fetch('http://localhost:3000/api/v1/auth/sign-in', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URI}/auth/sign-in`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -20,9 +24,15 @@ const AdminLogin = () => {
                 body: JSON.stringify({ email, password }),
             });
 
+            const contentType = response.headers.get('content-type');
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Network response was not ok');
+                if (contentType && contentType.includes('application/json')) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Network response was not ok');
+                } else {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Network response was not ok');
+                }
             }
 
             if (response.status === 404) {
@@ -30,6 +40,10 @@ const AdminLogin = () => {
             }
 
             const data = await response.json();
+            login(data.user, data.token);
+
+            router.push('/dashboard/admin');
+
             // Handle successful login, e.g., save token, redirect, etc.
             console.log('Login successful:', data);
         } catch (error) {
@@ -37,6 +51,7 @@ const AdminLogin = () => {
             alert(`Login failed: ${error.message}`);
         }
     }
+
     return (
         <LoginForm onSubmit={onSubmit} />
     )

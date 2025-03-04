@@ -37,7 +37,7 @@ const UserLogin = () => {
             const data = await response.json();
             login(data.user, data.token);
 
-            router.push('/dashboard/admin');
+            router.push('/dashboard/user');
 
             // Handle successful login, e.g., save token, redirect, etc.
             console.log('Login successful:', data.message);

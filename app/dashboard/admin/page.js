@@ -1,3 +1,4 @@
+import Logout from "@/components/auth/Logout";
 import Image from "next/image";
 
 export default function Dashboard() {
@@ -7,6 +8,7 @@ export default function Dashboard() {
       <p className="text-red-600 text-2xl">
         Welcome to the admin dashboard page
       </p>
+      <Logout />
     </div>
   );
 }
