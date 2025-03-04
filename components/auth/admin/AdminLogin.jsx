@@ -1,17 +1,12 @@
 'use client'
 
 import React from 'react'
-import girl from "@/public/image/home/login-girl.png"
-import Image from 'next/image'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
 import LoginForm from '../LoginForm'
 
 
 const AdminLogin = () => {
 
-    const handleSubmit = async (event) => {
+    const onSubmit = async (event) => {
         event.preventDefault();
         const email = event.target.email.value;
         const password = event.target.password.value;
@@ -43,7 +38,7 @@ const AdminLogin = () => {
         }
     }
     return (
-        <LoginForm onSubmit={handleSubmit} />
+        <LoginForm onSubmit={onSubmit} />
     )
 }
 
